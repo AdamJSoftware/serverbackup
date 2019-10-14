@@ -4,6 +4,7 @@ import json
 import Engine
 import os
 from threading import Thread
+import sys
 
 
 def config_read():
@@ -29,7 +30,9 @@ class Main(Thread):
                     try:
                         Engine.main(config)
                     except Exception as e:
-                        print(e)
+                        exc_type, exc_obj, exc_tb = sys.exc_info()
+                        print("Error: {} at line {}".format(
+                            e, exc_tb.tb_lineno))
                     time.sleep(int(config['frequency']))
                 else:
                     time.sleep(int(config['frequency']))
@@ -138,7 +141,12 @@ def main():
             config_write(config)
         elif user_input == "/backup_all":
             config = config_read()
-            Engine.main(config)
+            try:
+                Engine.main(config)
+            except Exception as e:
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                print("Error: {} at line {}".format(
+                    e, exc_tb.tb_lineno))
         elif user_input == "/restart":
             os._exit(0)
 
