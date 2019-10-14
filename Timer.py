@@ -60,6 +60,7 @@ def main():
                   "/backup_range -> Changes when backups are allowed to occur\n"
                   "/pattern -> Change what the server backup file pattern\n"
                   "/extension -> Changes the extension of the backup file\n"
+                  "/config -> Prints entire config file\n"
                   "/restart -> Restart the program")
         elif user_input == "/account_list":
             config = config_read()
@@ -147,6 +148,10 @@ def main():
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 print("Error: {} at line {}".format(
                     e, exc_tb.tb_lineno))
+        elif user_input == "/config":
+            config = config_read()
+            for item in config:
+                print('{} - {}'.format(item, config[item]))
         elif user_input == "/restart":
             os._exit(0)
 
