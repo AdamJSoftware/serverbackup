@@ -19,7 +19,12 @@ def main():
                 with open('config.json', 'w') as f:
                     json.dump(config, f)
         elif user_input == "c":
-            Timer.configurator()
+            if os.path.exists('config.json'):
+                Timer.configurator()
+            else:
+                print('Creating config file')
+                with open('config.json', 'w') as f:
+                    json.dump(config, f)
 
 
 if __name__ == "__main__":
