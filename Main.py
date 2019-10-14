@@ -4,8 +4,8 @@ import datetime
 import json
 import Timer
 
-config = {"hostname": "", "username": "", "password": "", "accounts": [
-    ""], "completed": "{}".format(datetime.datetime.today()), "server_directory": "/backup", "local_directory": "backup", "frequency": "3600", "backup_frequency": "", "backup_range": [2, 23], "pattern": "cpmove-ACCOUNT", "extension": "tar.gz"}
+config = {"hostname": "", "username": "", "password": "", "accounts": [], "completed": "{}".format(datetime.datetime.today(
+)), "server_directory": "/backup", "local_directory": "backup", "frequency": "3600", "backup_frequency": "1", "backup_range": [2, 23], "pattern": "cpmove-ACCOUNT", "extension": "tar.gz"}
 
 
 def main():

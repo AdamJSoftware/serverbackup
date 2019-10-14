@@ -23,19 +23,19 @@ class Main(Thread):
     def run(self):
         while True:
             with open('config.json', 'r') as f:
-                config = config()
+                config = config_read()
             if config['hostname'] and config['username'] and config['password'] != '':
-                if (datetime.datetime.today().day - datetime.datetime.strptime(config['completed'], '%Y-%m-%d %H:%M:%S.%f').day >= config['backup_frequency']):
+                if (datetime.datetime.today().day - datetime.datetime.strptime(config['completed'], '%Y-%m-%d %H:%M:%S.%f').day >= int(config['backup_frequency'])):
                     try:
                         Engine.main(config)
                     except Exception as e:
                         print(e)
-                    time.sleep(config['frequency'])
+                    time.sleep(int(config['frequency']))
                 else:
-                    time.sleep(config['frequency'])
+                    time.sleep(int(config['frequency']))
             else:
                 print('Please set hostname, username and password')
-                time.sleep(config['frequency'])
+                time.sleep(int(config['frequency']))
 
 
 def main():
