@@ -70,3 +70,5 @@ class LoadingBar(Thread):
             print('[{}{}] {}'.format(
                 string, empty_string, percentage) + "%", end='\r')
             time.sleep(.5)
+        print('')
+        return
