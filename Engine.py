@@ -58,7 +58,6 @@ class LoadingBar(Thread):
         time.sleep(1)
         while os.path.getsize(self.local_path) <= self.file_size:
             ratio = os.path.getsize(self.local_path) / self.file_size
-            # print(ratio, end='\r')
             string = ''
             for l in range(int(ratio*20)):
                 string = string + '='
@@ -69,6 +68,8 @@ class LoadingBar(Thread):
             percentage = '{:.2f}'.format(round(ratio*100, 2))
             print('[{}{}] {}'.format(
                 string, empty_string, percentage) + "%", end='\r')
+            if os.path.getsize(self.local_path) == self.file_size:
+                print('')
+                return
             time.sleep(.5)
-        print('')
-        return
+            
