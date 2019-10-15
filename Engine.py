@@ -1,6 +1,7 @@
 import pysftp
 import os
 import datetime
+import json
 import time
 from stat import *
 from threading import Thread
@@ -46,6 +47,8 @@ def main(config):
 
         connection.get_r(config['system_backup_files'], localpath)
         print('[COMPLETED SYSTEM FILES DOWNLOAD]')
+        config['completed'] = datetime.datetime.today()
+        config_write(config)
 
 
 class LoadingBar(Thread):
@@ -72,4 +75,8 @@ class LoadingBar(Thread):
                 print('')
                 return
             time.sleep(.5)
-            
+
+
+def config_write(data):
+    with open('config.json', 'w') as f:
+        json.dump(data, f)
