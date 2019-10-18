@@ -49,6 +49,11 @@ def main(config):
         print('[COMPLETED SYSTEM FILES DOWNLOAD]')
         config['completed'] = datetime.datetime.today()
         config_write(config)
+        directory = config['server_directory'] + "/" + \
+            str(datetime.date.today())
+        connection.chdir(config['server_directory'])
+        connection.rmdir(directory)
+
 
 
 class LoadingBar(Thread):
