@@ -29,7 +29,7 @@ class Main(Thread):
                 if (datetime.datetime.today().day - datetime.datetime.strptime(config['completed'], '%Y-%m-%d %H:%M:%S.%f').day >= int(config['backup_frequency'])):
                     try:
                         Engine.main(config)
-                        config['completed'] = datetime.datetime.today()
+                        config['completed'] = str(datetime.datetime.today())
                     except Exception as e:
                         exc_type, exc_obj, exc_tb = sys.exc_info()
                         print("Error: {} at line {}".format(

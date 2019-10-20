@@ -11,48 +11,49 @@ cnopts.hostkeys = None
 
 
 def main(config):
-    with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
-        directory = config['server_directory'] + "/" + \
-            str(datetime.date.today()) + "/" + 'accounts'
-        print(directory)
-        connection.chdir(directory)
-        print(connection.listdir())
-        for account in config['accounts']:
-            if not os.path.exists(os.path.join(config['local_directory'], str(datetime.date.today()), account)):
-                os.makedirs(os.path.join(
-                    config['local_directory'], str(datetime.date.today()), account))
-            pattern = config['pattern']
-            pattern = pattern.replace('ACCOUNT', account)
-            localpath = os.path.join(config['local_directory'], str(datetime.date.today()), account, '{}-{}.{}').format(
-                account, datetime.datetime.today().day, config['extension'])
-            print('Saving to: {}'.format(localpath))
-            remotepath = '{}.{}'.format(pattern, config['extension'])
-            print('Pulling from: {}'.format(remotepath))
-            print(connection.lstat(remotepath).st_size)
-            loading_bar = LoadingBar(
-                connection.lstat(remotepath).st_size, localpath)
-            loading_bar.start()
-            connection.get(remotepath=remotepath, localpath=localpath)
-            time.sleep(1)
-            print('')
-            print('[SUCCESSFULY FINISHED DOWNLOADING]')
-        print('Backing up server files')
-        directory = config['server_directory'] + "/" + \
-            str(datetime.date.today())
-        connection.chdir(directory)
-        localpath = os.path.join(config['local_directory'], str(
-            datetime.date.today()))
-        if not os.path.exists(localpath):
-            os.mkdir(localpath)
-
-        connection.get_r(config['system_backup_files'], localpath)
-        print('[COMPLETED SYSTEM FILES DOWNLOAD]')
-        config['completed'] = str(datetime.datetime.today())
-        config_write(config)
-        directory = config['server_directory'] + "/" + \
-            str(datetime.date.today())
-        connection.chdir(config['server_directory'])
-        connection.rmdir(directory)
+    try:
+        with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
+            directory = config['server_directory'] + "/" + \
+                str(datetime.date.today()) + "/" + 'accounts'
+            print(directory)
+            connection.chdir(directory)
+            print(connection.listdir())
+            for account in config['accounts']:
+                if not os.path.exists(os.path.join(config['local_directory'], str(datetime.date.today()), account)):
+                    os.makedirs(os.path.join(config['local_directory'], str(
+                        datetime.date.today()), account))
+                pattern = config['pattern']
+                pattern = pattern.replace('ACCOUNT', account)
+                localpath = os.path.join(config['local_directory'], str(datetime.date.today(
+                )), account, '{}-{}.{}').format(account, datetime.datetime.today().day, config['extension'])
+                print('Saving to: {}'.format(localpath))
+                remotepath = '{}.{}'.format(pattern, config['extension'])
+                print('Pulling from: {}'.format(remotepath))
+                print(connection.lstat(remotepath).st_size)
+                loading_bar = LoadingBar(
+                    connection.lstat(remotepath).st_size, localpath)
+                loading_bar.start()
+                connection.get(remotepath=remotepath, localpath=localpath)
+                time.sleep(1)
+                print('')
+                print('[SUCCESSFULY FINISHED DOWNLOADING]')
+            print('Backing up server files')
+            directory = config['server_directory'] + \
+                "/" + str(datetime.date.today())
+            connection.chdir(directory)
+            localpath = os.path.join(
+                config['local_directory'], str(datetime.date.today()))
+            if not os.path.exists(localpath):
+                os.mkdir(localpath)
+            connection.get_r(config['system_backup_files'], localpath)
+            print('[COMPLETED SYSTEM FILES DOWNLOAD]')
+            config_write(config)
+            directory = config['server_directory'] + \
+                "/" + str(datetime.date.today())
+            connection.chdir(config['server_directory'])
+            connection.rmdir(directory)
+    except Exception as e:
+        print(f"Error on Engine.py {e}")
 
 
 class LoadingBar(Thread):
