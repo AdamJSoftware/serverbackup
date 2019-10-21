@@ -48,10 +48,15 @@ def main(config):
             connection.get_r(config['system_backup_files'], localpath)
             print('[COMPLETED SYSTEM FILES DOWNLOAD]')
             config_write(config)
-            directory = config['server_directory'] + \
-                "/" + str(datetime.date.today())
+            directory = os.path.join(
+                config['server_directory'], str(datetime.date.today()))
             connection.chdir(config['server_directory'])
-            connection.rmdir(directory)
+            print('REMOVING DIRECTORY')
+            try:
+                connection.rmdir(directory)
+            except Exception as e:
+                print(e)
+            print('DIRECTORY REMOVED')
     except Exception as e:
         print(f"Error on Engine.py {e}")
 
