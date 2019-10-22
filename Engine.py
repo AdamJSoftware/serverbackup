@@ -52,10 +52,7 @@ def main(config):
                 config['server_directory'], str(datetime.date.today()))
             connection.chdir(config['server_directory'])
             print('REMOVING DIRECTORY')
-            try:
-                connection.rmdir(directory)
-            except Exception as e:
-                print(e)
+            connection.execute(f'rm -rf {directory}')
             print('DIRECTORY REMOVED')
     except Exception as e:
         print(f"Error on Engine.py {e}")
