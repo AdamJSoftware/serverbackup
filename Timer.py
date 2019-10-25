@@ -34,6 +34,13 @@ class Main(Thread):
                         exc_type, exc_obj, exc_tb = sys.exc_info()
                         print("Error: {} at line {}".format(
                             e, exc_tb.tb_lineno))
+                    max_date = datetime.datetime.today(
+                    ) - datetime.timedelta(days=config['local_backup_amount'])
+                    max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
+                    all_backups = []
+                    for item in os.listdir(os.path.join(os.getcwd(), '/backup')):
+                        if item < max_date:
+                            os.remove(item)
                     time.sleep(int(config['frequency']))
                 else:
                     time.sleep(int(config['frequency']))
