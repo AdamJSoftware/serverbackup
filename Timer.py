@@ -30,6 +30,7 @@ class Main(Thread):
                     try:
                         Engine.main(config)
                         config['completed'] = str(datetime.datetime.today())
+                        config_write(config)
                     except Exception as e:
                         exc_type, exc_obj, exc_tb = sys.exc_info()
                         print("Error: {} at line {}".format(
