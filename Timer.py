@@ -29,14 +29,12 @@ class Main(Thread):
                 if (datetime.datetime.today().day - datetime.datetime.strptime(config['completed'], '%Y-%m-%d %H:%M:%S.%f').day >= int(config['backup_frequency'])):
                     try:
                         Engine.main(config)
-                        config['completed'] = str(datetime.datetime.today())
-                        config_write(config)
                     except Exception as e:
                         exc_type, exc_obj, exc_tb = sys.exc_info()
                         print("Error: {} at line {}".format(
                             e, exc_tb.tb_lineno))
                     max_date = datetime.datetime.today(
-                    ) - datetime.timedelta(days=config['local_backup_amount'])
+                    ) - datetime.timedelta(days=int(config['local_backup_amount']))
                     max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
                     all_backups = []
                     for item in os.listdir(os.path.join(os.getcwd(), '/backup')):

@@ -47,15 +47,17 @@ def main(config):
                 os.mkdir(localpath)
             connection.get_r(config['system_backup_files'], localpath)
             print('[COMPLETED SYSTEM FILES DOWNLOAD]')
-            config_write(config)
             directory = os.path.join(
                 config['server_directory'], str(datetime.date.today()))
             connection.chdir(config['server_directory'])
             print('REMOVING DIRECTORY')
             connection.execute(f'rm -rf {directory}')
             print('DIRECTORY REMOVED')
+            config['completed'] = str(datetime.datetime.today())
+            config_write(config)
     except Exception as e:
-        print(f"Error on Engine.py {e}")
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        print("Engine.py Error: {} at line {}".format(e, exc_tb.tb_lineno))
 
 
 class LoadingBar(Thread):
