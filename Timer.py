@@ -37,7 +37,7 @@ class Main(Thread):
                     ) - datetime.timedelta(days=int(config['local_backup_amount']))
                     max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
                     all_backups = []
-                    for item in os.listdir(os.path.join(os.getcwd(), '/backup')):
+                    for item in os.listdir(os.path.join(os.getcwd(), 'backup')):
                         if item < max_date:
                             os.remove(item)
                     time.sleep(int(config['frequency']))
