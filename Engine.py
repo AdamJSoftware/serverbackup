@@ -2,6 +2,7 @@ import pysftp
 import os
 import datetime
 import json
+import sys
 import time
 from stat import *
 from threading import Thread
@@ -19,24 +20,30 @@ def main(config):
             connection.chdir(directory)
             print(connection.listdir())
             for account in config['accounts']:
-                if not os.path.exists(os.path.join(config['local_directory'], str(datetime.date.today()), account)):
-                    os.makedirs(os.path.join(config['local_directory'], str(
-                        datetime.date.today()), account))
-                pattern = config['pattern']
-                pattern = pattern.replace('ACCOUNT', account)
-                localpath = os.path.join(config['local_directory'], str(datetime.date.today(
-                )), account, '{}-{}.{}').format(account, datetime.datetime.today().day, config['extension'])
-                print('Saving to: {}'.format(localpath))
-                remotepath = '{}.{}'.format(pattern, config['extension'])
-                print('Pulling from: {}'.format(remotepath))
-                print(connection.lstat(remotepath).st_size)
-                loading_bar = LoadingBar(
-                    connection.lstat(remotepath).st_size, localpath)
-                loading_bar.start()
-                connection.get(remotepath=remotepath, localpath=localpath)
-                time.sleep(1)
-                print('')
-                print('[SUCCESSFULY FINISHED DOWNLOADING]')
+                try:
+                    if not os.path.exists(os.path.join(config['local_directory'], str(datetime.date.today()), account)):
+                        os.makedirs(os.path.join(config['local_directory'], str(
+                            datetime.date.today()), account))
+                    pattern = config['pattern']
+                    pattern = pattern.replace('ACCOUNT', account)
+                    localpath = os.path.join(config['local_directory'], str(datetime.date.today(
+                    )), account, '{}-{}.{}').format(account, datetime.datetime.today().day, config['extension'])
+                    print('Saving to: {}'.format(localpath))
+                    remotepath = '{}.{}'.format(pattern, config['extension'])
+                    print('Pulling from: {}'.format(remotepath))
+                    print(connection.lstat(remotepath).st_size)
+                    loading_bar = LoadingBar(
+                        connection.lstat(remotepath).st_size, localpath)
+                    loading_bar.start()
+                    connection.get(remotepath=remotepath, localpath=localpath)
+                    time.sleep(1)
+                    print('')
+                    print('[SUCCESSFULY FINISHED DOWNLOADING]')
+                except Exception as e:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    print("Engine.py Error: {} at line {}".format(
+                        e, exc_tb.tb_lineno))
+                    print(f"Couldn't download {account}")
             print('Backing up server files')
             directory = config['server_directory'] + \
                 "/" + str(datetime.date.today())
