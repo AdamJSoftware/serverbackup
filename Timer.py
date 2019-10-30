@@ -38,8 +38,14 @@ class Main(Thread):
                     max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
                     all_backups = []
                     for item in os.listdir(os.path.join(os.getcwd(), 'backup')):
-                        if item < max_date:
-                            os.remove(item)
+                        try:
+                            if item < max_date:
+                                os.remove(os.path.join(
+                                    os.getcwd(), 'backup', item))
+                        except Exception as e:
+                            exc_type, exc_obj, exc_tb = sys.exc_info()
+                            print("Error: {} at line {}".format(
+                                e, exc_tb.tb_lineno))
                     time.sleep(int(config['frequency']))
                 else:
                     time.sleep(int(config['frequency']))
