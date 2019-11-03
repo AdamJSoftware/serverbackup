@@ -3,6 +3,7 @@ import datetime
 import json
 import Engine
 import os
+import shutil
 from threading import Thread
 import sys
 
@@ -40,7 +41,7 @@ class Main(Thread):
                     for item in os.listdir(os.path.join(os.getcwd(), 'backup')):
                         try:
                             if item < max_date:
-                                os.removedirs(os.path.join(
+                                shutil.rmtree(os.path.join(
                                     os.getcwd(), 'backup', item))
                         except Exception as e:
                             exc_type, exc_obj, exc_tb = sys.exc_info()

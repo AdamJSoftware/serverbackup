@@ -8,8 +8,6 @@ from stat import *
 from threading import Thread
 
 
-
-
 def main(config):
     print('CONNECTING')
     cnopts = pysftp.CnOpts()
