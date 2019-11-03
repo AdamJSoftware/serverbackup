@@ -15,6 +15,7 @@ def main(config):
     cnopts.hostkeys = None
     try:
         with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
+            print('SUCCESS CONNECTING')
             directory = config['server_directory'] + "/" + \
                 str(datetime.date.today()) + "/" + 'accounts'
             print(directory)
