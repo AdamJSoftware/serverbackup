@@ -14,7 +14,7 @@ def main():
         user_input = input("Standard (s) or Config(c) -> ")
         if user_input == "s":
             if os.path.exists('config.json'):
-                subprocess.call(['python3', 'Timer.py'])
+                subprocess.call(['python', 'Timer.py'])
             else:
                 print('Creating config file')
                 with open('config.json', 'w') as f:
