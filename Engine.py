@@ -7,11 +7,12 @@ import time
 from stat import *
 from threading import Thread
 
-cnopts = pysftp.CnOpts()
-cnopts.hostkeys = None
+
 
 
 def main(config):
+    cnopts = pysftp.CnOpts()
+    cnopts.hostkeys = None
     try:
         with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
             directory = config['server_directory'] + "/" + \
