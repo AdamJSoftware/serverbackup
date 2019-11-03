@@ -6,6 +6,7 @@ import os
 import shutil
 from threading import Thread
 import sys
+from dateutil import parser
 
 
 def config_read():
@@ -27,7 +28,10 @@ class Main(Thread):
             with open('config.json', 'r') as f:
                 config = config_read()
             if config['hostname'] and config['username'] and config['password'] != '':
-                if datetime.timedelta(datetime.datetime.today().day - datetime.datetime.strptime(config['completed'], '%Y-%m-%d %H:%M:%S.%f').day >= int(config['backup_frequency'])):
+                x = datetime.datetime.today(
+                ) - parser.parse(str(config['completed']))
+                x = str.split(str(x), ' days')[0]
+                if int(x) >= int(config['backup_frequency']):
                     try:
                         Engine.main(config)
                     except Exception as e:
