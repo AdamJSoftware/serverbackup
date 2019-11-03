@@ -27,7 +27,7 @@ class Main(Thread):
             with open('config.json', 'r') as f:
                 config = config_read()
             if config['hostname'] and config['username'] and config['password'] != '':
-                if (datetime.datetime.today().day - datetime.datetime.strptime(config['completed'], '%Y-%m-%d %H:%M:%S.%f').day >= int(config['backup_frequency'])):
+                if datetime.timedelta(datetime.datetime.today().day - datetime.datetime.strptime(config['completed'], '%Y-%m-%d %H:%M:%S.%f').day >= int(config['backup_frequency'])):
                     try:
                         Engine.main(config)
                     except Exception as e:
