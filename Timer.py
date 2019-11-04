@@ -30,8 +30,7 @@ class Main(Thread):
             if config['hostname'] and config['username'] and config['password'] != '':
                 x = datetime.datetime.today(
                 ) - parser.parse(str(config['completed']))
-                x = str.split(str(x), ' days')[0]
-                if int(x) >= int(config['backup_frequency']):
+                if int(x.days) >= int(config['backup_frequency']):
                     try:
                         Engine.main(config)
                     except Exception as e:
