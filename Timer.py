@@ -168,6 +168,26 @@ def main():
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 print("Error: {} at line {}".format(
                     e, exc_tb.tb_lineno))
+        elif user_input == "/absolute":
+            config = config_read()
+            new_input = input(
+                "Please enter the absolute folder location -> ")
+            config['absolute_path'] = new_input
+            config_write(config)
+        elif user_input == "/relative":
+            config = config_read()
+            new_input = input(
+                "Please enter the relative folder location -> ")
+            config['relative_path'] = new_input
+            config_write(config)
+        elif user_input == "/r":
+            config = config_read()
+            config['path_option'] = 'r'
+            config_write(config)
+        elif user_input == "/a":
+            config = config_read()
+            config['path_option'] = 'a'
+            config_write(config)
         elif user_input == "/config":
             config = config_read()
             for item in config:
