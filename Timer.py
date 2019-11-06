@@ -41,11 +41,16 @@ class Main(Thread):
                     ) - datetime.timedelta(days=int(config['local_backup_amount']))
                     max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
                     all_backups = []
-                    for item in os.listdir(os.path.join(os.getcwd(), 'backup')):
+                    if (config['path_option'] == "a"):
+                        directory = config['absolute_path']
+                    else:
+                        directory = os.path.join(
+                            os.getcwd(), config['relative_path'])
+                    for item in os.listdir(directory):
                         try:
                             if item < max_date:
                                 shutil.rmtree(os.path.join(
-                                    os.getcwd(), 'backup', item))
+                                    directory, item))
                         except Exception as e:
                             exc_type, exc_obj, exc_tb = sys.exc_info()
                             print("Error: {} at line {}".format(
@@ -78,6 +83,10 @@ def main():
                   "/pattern -> Change what the server backup file pattern\n"
                   "/extension -> Changes the extension of the backup file\n"
                   "/config -> Prints entire config file\n"
+                  "/absolute -> Set the absolute path\n"
+                  "/relative -> Set the relative path\n"
+                  "/a -> Set default path to absolute\n"
+                  "/r -> Set default path to relative\n"
                   "/restart -> Restart the program")
         elif user_input == "/account_list":
             config = config_read()
@@ -119,12 +128,6 @@ def main():
             new_input = input(
                 "Please type in the new password -> ")
             config['password'] = new_input
-            config_write(config)
-        elif user_input == "/server_directory":
-            config = config_read()
-            new_input = input(
-                "Please type in the new server directory -> ")
-            config['server_directory'] = new_input
             config_write(config)
         elif user_input == "/local_directory":
             config = config_read()

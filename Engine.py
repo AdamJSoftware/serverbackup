@@ -15,6 +15,7 @@ def main(config):
     try:
         with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
             print('SUCCESS CONNECTING')
+
             directory = config['server_directory'] + "/" + \
                 str(datetime.date.today()) + "/" + 'accounts'
             print(directory)
@@ -22,16 +23,20 @@ def main(config):
             print(connection.listdir())
             for account in config['accounts']:
                 try:
-                    if not os.path.exists(os.path.join(config['local_directory'], str(datetime.date.today()), account)):
-                        os.makedirs(os.path.join(config['local_directory'], str(
+                    if (config['path_option'] == "a"):
+                        directory = config['absolute_path']
+                    else:
+                        directory = config['relative_path']
+                    if not os.path.exists(os.path.join(directory, str(datetime.date.today()), account)):
+                        os.makedirs(os.path.join(directory, str(
                             datetime.date.today()), account))
                     pattern = config['pattern']
                     pattern = pattern.replace('ACCOUNT', account)
-                    localpath = os.path.join(config['local_directory'], str(datetime.date.today(
-                    )), account, '{}-{}.{}').format(account, datetime.datetime.today().day, config['extension'])
-                    print('Saving to: {}'.format(localpath))
-                    remotepath = '{}.{}'.format(pattern, config['extension'])
-                    print('Pulling from: {}'.format(remotepath))
+                    localpath = os.path.join(directory, str(datetime.date.today(
+                    )), account, f'{account}-{datetime.datetime.today().day}.{config["extension"]}')
+                    print(f'Saving to: {localpath}')
+                    remotepath = f'{pattern}.{config["extension"]}'
+                    print(f'Pulling from: {remotepath}')
                     print(connection.lstat(remotepath).st_size)
                     loading_bar = LoadingBar(
                         connection.lstat(remotepath).st_size, localpath)
@@ -49,8 +54,12 @@ def main(config):
             directory = config['server_directory'] + \
                 "/" + str(datetime.date.today())
             connection.chdir(directory)
-            localpath = os.path.join(
-                config['local_directory'], str(datetime.date.today()))
+            if (config['path_option'] == "a"):
+                localpath = os.path.join(
+                    config['absolute_path'], str(datetime.date.today()))
+            else:
+                localpath = os.path.join(
+                    config['relative_path'], str(datetime.date.today()))
             if not os.path.exists(localpath):
                 os.mkdir(localpath)
             connection.get_r(config['system_backup_files'], localpath)
