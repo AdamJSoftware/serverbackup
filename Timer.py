@@ -65,41 +65,41 @@ class Main(Thread):
     def run(self):
         while True:
             with open('config.json', 'r') as f:
-        config = config_read()
-        if config['hostname'] and config['username'] and config['password'] != '':
-            x = datetime.datetime.today(
-            ) - parser.parse(str(config['completed']))
-            if int(x.days) >= int(config['backup_frequency']):
-                try:
-                    Engine.main(config)
-                except Exception as e:
-                    exc_type, exc_obj, exc_tb = sys.exc_info()
-                    print("Error: {} at line {}".format(
-                        e, exc_tb.tb_lineno))
-                max_date = datetime.datetime.today(
-                ) - datetime.timedelta(days=int(config['local_backup_amount']))
-                max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
-                all_backups = []
-                if (config['path_option'] == "a"):
-                    directory = config['absolute_path']
-                else:
-                    directory = os.path.join(
-                        os.getcwd(), config['relative_path'])
-                for item in os.listdir(directory):
-                    try:
-                        if item < max_date:
-                            shutil.rmtree(os.path.join(
-                                directory, item))
-                    except Exception as e:
-                        exc_type, exc_obj, exc_tb = sys.exc_info()
+                config = config_read()
+                if config['hostname'] and config['username'] and config['password'] != '':
+                    x = datetime.datetime.today(
+                    ) - parser.parse(str(config['completed']))
+                    if int(x.days) >= int(config['backup_frequency']):
+                        try:
+                            Engine.main(config)
+                        except Exception as e:
+                            exc_type, exc_obj, exc_tb = sys.exc_info()
                         print("Error: {} at line {}".format(
                             e, exc_tb.tb_lineno))
-                time.sleep(int(config['frequency']))
-            else:
-                time.sleep(int(config['frequency']))
-        else:
-            print('Please set hostname, username and password')
-            time.sleep(int(config['frequency']))
+                        max_date = datetime.datetime.today(
+                        ) - datetime.timedelta(days=int(config['local_backup_amount']))
+                        max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
+                        all_backups = []
+                        if (config['path_option'] == "a"):
+                            directory = config['absolute_path']
+                        else:
+                            directory = os.path.join(
+                                os.getcwd(), config['relative_path'])
+                        for item in os.listdir(directory):
+                            try:
+                                if item < max_date:
+                                    shutil.rmtree(os.path.join(
+                                        directory, item))
+                            except Exception as e:
+                                exc_type, exc_obj, exc_tb = sys.exc_info()
+                                print("Error: {} at line {}".format(
+                                    e, exc_tb.tb_lineno))
+                        time.sleep(int(config['frequency']))
+                    else:
+                        time.sleep(int(config['frequency']))
+                else:
+                    print('Please set hostname, username and password')
+                    time.sleep(int(config['frequency']))
 
 
 def main():
