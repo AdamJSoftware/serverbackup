@@ -105,4 +105,4 @@ class LoadingBar(Thread):
 
 def config_write(data):
     with open('config.json', 'w') as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)

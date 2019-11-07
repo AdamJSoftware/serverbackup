@@ -19,7 +19,7 @@ def main():
         else:
             print('Creating config file')
             with open('config.json', 'w') as f:
-                json.dump(config, f)
+                json.dump(config, f, indent=4)
 
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ def config_read():
 
 def config_write(data):
     with open('config.json', 'w') as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
 
 def backup():
