@@ -12,10 +12,7 @@ config = {"hostname": "", "username": "", "password": "", "accounts": [], "compl
 def main():
     while True:
         if os.path.exists('config.json'):
-            try:
-                subprocess.call(['python', 'Timer.py'])
-            except Exception as e:
-                print(e)
+            Timer.configurator()
         else:
             print('Creating config file')
             with open('config.json', 'w') as f:

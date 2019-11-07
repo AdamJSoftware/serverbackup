@@ -15,7 +15,6 @@ def main(config):
     try:
         with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
             print('SUCCESS CONNECTING')
-
             directory = config['server_directory'] + "/" + \
                 str(datetime.date.today()) + "/" + 'accounts'
             print(directory)
@@ -41,7 +40,8 @@ def main(config):
                     loading_bar = LoadingBar(
                         connection.lstat(remotepath).st_size, localpath)
                     loading_bar.start()
-                    connection.get(remotepath=remotepath, localpath=localpath)
+                    connection.get(remotepath=remotepath,
+                                   localpath=localpath, )
                     time.sleep(1)
                     print('')
                     print('[SUCCESSFULY FINISHED DOWNLOADING]')
