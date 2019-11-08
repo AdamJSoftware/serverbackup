@@ -24,7 +24,7 @@ def backup():
         config = config_read()
         if config['hostname'] and config['username'] and config['password'] != '':
             x = datetime.datetime.today(
-            ) - parser.parse(str(config['completed']))
+            ).date - parser.parse(str(config['completed'])).date
             if int(x.days) >= int(config['backup_frequency']):
                 try:
                     Engine.main(config)
@@ -96,6 +96,7 @@ class Main(Thread):
                                     e, exc_tb.tb_lineno))
                         time.sleep(int(config['frequency']))
                     else:
+                        print('sleeping')
                         time.sleep(int(config['frequency']))
                 else:
                     print('Please set hostname, username and password')
