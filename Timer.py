@@ -24,7 +24,7 @@ def backup():
         config = config_read()
         if config['hostname'] and config['username'] and config['password'] != '':
             x = datetime.datetime.today(
-            ).date - parser.parse(str(config['completed'])).date
+            ).day - parser.parse(str(config['completed'])).day
             if int(x.days) >= int(config['backup_frequency']):
                 try:
                     Engine.main(config)
