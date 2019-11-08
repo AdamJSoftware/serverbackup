@@ -74,8 +74,8 @@ class Main(Thread):
                             Engine.main(config)
                         except Exception as e:
                             exc_type, exc_obj, exc_tb = sys.exc_info()
-                        print("Error: {} at line {}".format(
-                            e, exc_tb.tb_lineno))
+                            print("Error: {} at line {}".format(
+                                e, exc_tb.tb_lineno))
                         max_date = datetime.datetime.today(
                         ) - datetime.timedelta(days=int(config['local_backup_amount']))
                         max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
