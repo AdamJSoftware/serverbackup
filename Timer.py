@@ -49,8 +49,8 @@ class Main(Thread):
                                     os.getcwd(), config['relative_path'])
                             for item in os.listdir(directory):
                                 try:
-                                    date_difference = (datetime.datetime.strptime(time.ctime(os.stat(
-                                        item).st_ctime), "%a %b %d %H:%M:%S %Y") - datetime.datetime.today()).days
+                                    date_difference = (datetime.datetime.today() - datetime.datetime.strptime(time.ctime(os.stat(
+                                        item).st_ctime), "%a %b %d %H:%M:%S %Y")).days
                                     if date_difference < int(config['local_backup_amount']):
                                         shutil.rmtree(os.path.join(
                                             directory, item))
