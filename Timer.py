@@ -31,33 +31,35 @@ class Main(Thread):
                     x = datetime.datetime.today(
                     ).day - parser.parse(str(config['completed'])).day
                     if x >= int(config['backup_frequency']):
-                        try:
-                            Engine.main(config)
-                        except Exception as e:
-                            exc_type, exc_obj, exc_tb = sys.exc_info()
-                            print("Error: {} at line {}".format(
-                                e, exc_tb.tb_lineno))
-                        max_date = datetime.datetime.today(
-                        ) - datetime.timedelta(days=int(config['local_backup_amount']))
-                        # max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
-                        all_backups = []
-                        if (config['path_option'] == "a"):
-                            directory = config['absolute_path']
-                        else:
-                            directory = os.path.join(
-                                os.getcwd(), config['relative_path'])
-                        for item in os.listdir(directory):
+                        if config['backup_range'][0] <= datetime.datetime.today().hour <= config['backup_range'][1]:
                             try:
-                                if datetime.datetime.strptime(time.ctime(os.stat(item).st_ctime), "%a %b %d %H:%M:%S %Y") < max_date:
-                                    shutil.rmtree(os.path.join(
-                                        directory, item))
-                                    print(f'REMOVING DEPRICATED FOLDER {item}')
-                                    print(f'MAX DATE {max_date}')
+                                Engine.main(config)
                             except Exception as e:
                                 exc_type, exc_obj, exc_tb = sys.exc_info()
                                 print("Error: {} at line {}".format(
                                     e, exc_tb.tb_lineno))
-                        time.sleep(int(config['frequency']))
+                            max_date = datetime.datetime.today(
+                            ) - datetime.timedelta(days=int(config['local_backup_amount']))
+                            # max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
+                            all_backups = []
+                            if (config['path_option'] == "a"):
+                                directory = config['absolute_path']
+                            else:
+                                directory = os.path.join(
+                                    os.getcwd(), config['relative_path'])
+                            for item in os.listdir(directory):
+                                try:
+                                    if datetime.datetime.strptime(time.ctime(os.stat(item).st_ctime), "%a %b %d %H:%M:%S %Y") < max_date:
+                                        shutil.rmtree(os.path.join(
+                                            directory, item))
+                                        print(
+                                            f'REMOVING DEPRICATED FOLDER {item}')
+                                        print(f'MAX DATE {max_date}')
+                                except Exception as e:
+                                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                                    print("Error: {} at line {}".format(
+                                        e, exc_tb.tb_lineno))
+                            time.sleep(int(config['frequency']))
                     else:
                         print('sleeping')
                         time.sleep(int(config['frequency']))
