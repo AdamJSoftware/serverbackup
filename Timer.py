@@ -38,8 +38,8 @@ class Main(Thread):
                                 exc_type, exc_obj, exc_tb = sys.exc_info()
                                 print("Error: {} at line {}".format(
                                     e, exc_tb.tb_lineno))
-                            max_date = datetime.datetime.today(
-                            ) - datetime.timedelta(days=int(config['local_backup_amount']))
+                            # max_date = datetime.datetime.today(
+                            # ) - datetime.timedelta(days=int(config['local_backup_amount']))
                             # max_date = f'{max_date.year}-{max_date.month}-{max_date.day}'
                             all_backups = []
                             if (config['path_option'] == "a"):
@@ -49,12 +49,16 @@ class Main(Thread):
                                     os.getcwd(), config['relative_path'])
                             for item in os.listdir(directory):
                                 try:
-                                    if datetime.datetime.strptime(time.ctime(os.stat(item).st_ctime), "%a %b %d %H:%M:%S %Y") < max_date:
+                                    date_difference = (datetime.datetime.strptime(time.ctime(os.stat(
+                                        item).st_ctime), "%a %b %d %H:%M:%S %Y") - datetime.datetime.today()).days
+                                    if date_difference < int(config['local_backup_amount']):
                                         shutil.rmtree(os.path.join(
                                             directory, item))
                                         print(
                                             f'REMOVING DEPRICATED FOLDER {item}')
-                                        print(f'MAX DATE {max_date}')
+                                        print(f'MAX DATE {date_difference}')
+                                        print(
+                                            f'local_backup_amount{str(config["local_backup_amount"])}')
                                 except Exception as e:
                                     exc_type, exc_obj, exc_tb = sys.exc_info()
                                     print("Error: {} at line {}".format(
