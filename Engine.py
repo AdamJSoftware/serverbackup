@@ -14,9 +14,11 @@ def main(config):
     cnopts.hostkeys = None
     try:
         with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
+            today = datetime.datetime.today()
+            today_date = datetime.date.today()
             print('SUCCESS CONNECTING')
             directory = config['server_directory'] + "/" + \
-                str(datetime.date.today()) + "/" + 'accounts'
+                str(today) + "/" + 'accounts'
             print(directory)
             connection.chdir(directory)
             print(connection.listdir())
@@ -26,13 +28,13 @@ def main(config):
                         directory = config['absolute_path']
                     else:
                         directory = config['relative_path']
-                    if not os.path.exists(os.path.join(directory, str(datetime.date.today()), account)):
+                    if not os.path.exists(os.path.join(directory, str(today), account)):
                         os.makedirs(os.path.join(directory, str(
-                            datetime.date.today()), account))
+                            today), account))
                     pattern = config['pattern']
                     pattern = pattern.replace('ACCOUNT', account)
-                    localpath = os.path.join(directory, str(datetime.date.today(
-                    )), account, f'{account}-{datetime.datetime.today().day}.{config["extension"]}')
+                    localpath = os.path.join(directory, str(
+                        today), account, f'{account}-{today.day}.{config["extension"]}')
                     print(f'Saving to: {localpath}')
                     remotepath = f'{pattern}.{config["extension"]}'
                     print(f'Pulling from: {remotepath}')
@@ -52,25 +54,25 @@ def main(config):
                     print(f"Couldn't download {account}")
             print('Backing up server files')
             directory = config['server_directory'] + \
-                "/" + str(datetime.date.today())
+                "/" + str(today_date)
             connection.chdir(directory)
             if (config['path_option'] == "a"):
                 localpath = os.path.join(
-                    config['absolute_path'], str(datetime.date.today()))
+                    config['absolute_path'], str(today_date))
             else:
                 localpath = os.path.join(
-                    config['relative_path'], str(datetime.date.today()))
+                    config['relative_path'], str(today_date))
             if not os.path.exists(localpath):
                 os.mkdir(localpath)
             connection.get_r(config['system_backup_files'], localpath)
             print('[COMPLETED SYSTEM FILES DOWNLOAD]')
             directory = os.path.join(
-                config['server_directory'], str(datetime.date.today()))
+                config['server_directory'], str(today_date))
             connection.chdir(config['server_directory'])
             print('REMOVING DIRECTORY')
             connection.execute(f'rm -rf {directory}')
             print('DIRECTORY REMOVED')
-            config['completed'] = str(datetime.datetime.today())
+            config['completed'] = str(today)
             config_write(config)
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
