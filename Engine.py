@@ -18,7 +18,7 @@ def main(config):
             today_date = datetime.date.today()
             print('SUCCESS CONNECTING')
             directory = config['server_directory'] + "/" + \
-                str(today) + "/" + 'accounts'
+                str(today_date) + "/" + 'accounts'
             print(directory)
             connection.chdir(directory)
             print(connection.listdir())
