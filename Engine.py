@@ -28,13 +28,13 @@ def main(config):
                         directory = config['absolute_path']
                     else:
                         directory = config['relative_path']
-                    if not os.path.exists(os.path.join(directory, str(today), account)):
+                    if not os.path.exists(os.path.join(directory, str(today_date), account)):
                         os.makedirs(os.path.join(directory, str(
                             today_date), account))
                     pattern = config['pattern']
                     pattern = pattern.replace('ACCOUNT', account)
                     localpath = os.path.join(directory, str(
-                        today), account, f'{account}-{today.day}.{config["extension"]}')
+                        today_date), account, f'{account}-{today.day}.{config["extension"]}')
                     print(f'Saving to: {localpath}')
                     remotepath = f'{pattern}.{config["extension"]}'
                     print(f'Pulling from: {remotepath}')
