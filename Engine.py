@@ -30,7 +30,7 @@ def main(config):
                         directory = config['relative_path']
                     if not os.path.exists(os.path.join(directory, str(today), account)):
                         os.makedirs(os.path.join(directory, str(
-                            today), account))
+                            today_date), account))
                     pattern = config['pattern']
                     pattern = pattern.replace('ACCOUNT', account)
                     localpath = os.path.join(directory, str(
