@@ -6,7 +6,7 @@ import Timer
 
 config = {"hostname": "", "username": "", "password": "", "accounts": [], "completed": "{}".format(datetime.datetime.today(
 )), "server_directory": "/backup", "frequency": "3600", "backup_frequency": "1", "backup_range": [2, 23], "pattern": "ACCOUNT", "extension": "tar.gz",
-    "system_backup_files": "system", "local_backup_amount": "14", "path_option": "r", "absolute_path": "/", "remote_path": "/backup"}
+    "system_backup_files": "system", "local_backup_amount": "14", "path_option": "r", "absolute_path": "/", "remote_path": "/backup", "next_day": False}
 
 
 def main():

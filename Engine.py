@@ -1,6 +1,7 @@
 import pysftp
 import os
 import datetime
+from datetime import timedelta
 import json
 import sys
 import time
@@ -14,8 +15,12 @@ def main(config):
     cnopts.hostkeys = None
     try:
         with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
-            today = datetime.datetime.today()
-            today_date = datetime.date.today()
+            if config['next_day'] == True:
+                today = datetime.datetime.today() - timedelta(days=1)
+                today_date = datetime.date.today() - timedelta(days=1)
+            else:
+                today = datetime.datetime.today()
+                today_date = datetime.date.today()
             print('SUCCESS CONNECTING')
             directory = config['server_directory'] + "/" + \
                 str(today_date) + "/" + 'accounts'

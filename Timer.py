@@ -28,8 +28,8 @@ class Main(Thread):
             with open('config.json', 'r') as f:
                 config = config_read()
                 if config['hostname'] and config['username'] and config['password'] != '':
-                    x = datetime.datetime.today(
-                    ).day - parser.parse(str(config['completed'])).day
+                    x = datetime.datetime.today().day - \
+                        parser.parse(str(config['completed'])).day
                     if x >= int(config['backup_frequency']):
                         if config['backup_range'][0] <= datetime.datetime.today().hour <= config['backup_range'][1]:
                             try:
@@ -51,7 +51,7 @@ class Main(Thread):
                                 try:
                                     date_difference = (datetime.datetime.today() - datetime.datetime.strptime(time.ctime(os.stat(
                                         item).st_ctime), "%a %b %d %H:%M:%S %Y")).days
-                                    if date_difference < int(config['local_backup_amount']):
+                                    if date_difference <= int(config['local_backup_amount']):
                                         shutil.rmtree(os.path.join(
                                             directory, item))
                                         print(
@@ -96,6 +96,7 @@ def main():
                   "/relative -> Set the relative path\n"
                   "/a -> Set default path to absolute\n"
                   "/r -> Set default path to relative\n"
+                  "/next_day -> Toggles if program backups backup from previous day\n"
                   "/restart -> Restart the program")
         elif user_input == "/account_list":
             config = config_read()
@@ -196,6 +197,13 @@ def main():
         elif user_input == "/a":
             config = config_read()
             config['path_option'] = 'a'
+            config_write(config)
+        elif user_input == "/next_day":
+            config = config_read()
+            if config['next_day'] == True:
+                config['next_day'] = False
+            else:
+                config['next_day'] = True
             config_write(config)
         elif user_input == "/config":
             config = config_read()
