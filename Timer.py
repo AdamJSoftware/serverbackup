@@ -200,10 +200,10 @@ def main():
             config_write(config)
         elif user_input == "/next_day":
             config = config_read()
-            if config['next_day'] == True:
-                config['next_day'] = False
+            if config['next_day'] == "True":
+                config['next_day'] = "False"
             else:
-                config['next_day'] = True
+                config['next_day'] = "True"
             config_write(config)
         elif user_input == "/config":
             config = config_read()

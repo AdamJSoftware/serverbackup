@@ -15,7 +15,7 @@ def main(config):
     cnopts.hostkeys = None
     try:
         with pysftp.Connection(config['hostname'], username=config['username'], password=config['password'], cnopts=cnopts) as connection:
-            if config['next_day'] == True:
+            if config['next_day'] == "True":
                 today = datetime.datetime.today() - timedelta(days=1)
                 today_date = datetime.date.today() - timedelta(days=1)
             else:
