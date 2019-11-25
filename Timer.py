@@ -31,7 +31,7 @@ class Main(Thread):
                     x = datetime.datetime.today().day - \
                         parser.parse(str(config['completed'])).day
                     if x >= int(config['backup_frequency']):
-                        if config['backup_range'][0] <= datetime.datetime.today().hour <= config['backup_range'][1]:
+                        if int(config['backup_range'][0]) <= datetime.datetime.today().hour <= int(config['backup_range'][1]):
                             try:
                                 Engine.main(config)
                             except Exception as e:
