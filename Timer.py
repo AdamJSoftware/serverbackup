@@ -50,10 +50,10 @@ class Main(Thread):
                             for item in os.listdir(directory):
                                 try:
                                     date_difference = (datetime.datetime.today() - datetime.datetime.strptime(time.ctime(os.stat(
-                                        item).st_ctime), "%a %b %d %H:%M:%S %Y")).days
+                                        os.path.join(directory,item)).st_ctime), "%a %b %d %H:%M:%S %Y")).days
                                     if date_difference <= int(config['local_backup_amount']):
-                                        shutil.rmtree(os.path.join(
-                                            directory, item))
+                                        # shutil.rmtree(os.path.join(
+                                        #     directory, item))
                                         print(
                                             f'REMOVING DEPRICATED FOLDER {item}')
                                         print(f'MAX DATE {date_difference}')
@@ -61,7 +61,7 @@ class Main(Thread):
                                             f'local_backup_amount{str(config["local_backup_amount"])}')
                                 except Exception as e:
                                     exc_type, exc_obj, exc_tb = sys.exc_info()
-                                    print("Error: {} at line {}".format(
+                                    print("Error (Timer.py): {} at line {}".format(
                                         e, exc_tb.tb_lineno))
                             time.sleep(int(config['frequency']))
                     else:
