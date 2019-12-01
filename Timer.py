@@ -50,7 +50,7 @@ class Main(Thread):
                             for item in os.listdir(directory):
                                 try:
                                     date_difference = (datetime.datetime.today() - datetime.datetime.strptime(time.ctime(os.stat(
-                                        os.path.join(directory,item)).st_ctime), "%a %b %d %H:%M:%S %Y")).days
+                                        os.path.join(directory, item)).st_ctime), "%a %b %d %H:%M:%S %Y")).days
                                     if date_difference <= int(config['local_backup_amount']):
                                         # shutil.rmtree(os.path.join(
                                         #     directory, item))
@@ -65,6 +65,7 @@ class Main(Thread):
                                         e, exc_tb.tb_lineno))
                             time.sleep(int(config['frequency']))
                     else:
+                        print(f'TIME PASSED: {x}')
                         print('sleeping')
                         time.sleep(int(config['frequency']))
                 else:
