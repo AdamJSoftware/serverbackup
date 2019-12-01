@@ -28,8 +28,9 @@ class Main(Thread):
             with open('config.json', 'r') as f:
                 config = config_read()
                 if config['hostname'] and config['username'] and config['password'] != '':
-                    x = datetime.datetime.today().day - \
-                        parser.parse(str(config['completed'])).day
+                    x = datetime.datetime.today() - \
+                        parser.parse(str(config['completed']))
+                    x = x.days
                     if x >= int(config['backup_frequency']):
                         if int(config['backup_range'][0]) <= datetime.datetime.today().hour <= int(config['backup_range'][1]):
                             try:
