@@ -59,11 +59,15 @@ class Main(Thread):
                                             f'REMOVING DEPRICATED FOLDER {item}')
                                         print(f'MAX DATE {date_difference}')
                                         print(
-                                            f'local_backup_amount{str(config["local_backup_amount"])}')
+                                            f'local_backup_amount: {str(config["local_backup_amount"])}')
                                 except Exception as e:
                                     exc_type, exc_obj, exc_tb = sys.exc_info()
                                     print("Error (Timer.py): {} at line {}".format(
                                         e, exc_tb.tb_lineno))
+                            time.sleep(int(config['frequency']))
+                        else:
+                            # print(f'TIME PASSED: {x}')
+                            # print('sleeping')
                             time.sleep(int(config['frequency']))
                     else:
                         print(f'TIME PASSED: {x}')
