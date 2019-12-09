@@ -215,8 +215,8 @@ def main():
             config = config_read()
             for item in config:
                 print('{} - {}'.format(item, config[item]))
-        elif user_input == "/backup":
-            backup()
+        # elif user_input == "/backup":
+        #     backup()
         elif user_input == "/restart":
             os._exit(0)
 
