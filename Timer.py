@@ -70,8 +70,8 @@ class Main(Thread):
                             # print('sleeping')
                             time.sleep(int(config['frequency']))
                     else:
-                        print(f'TIME PASSED: {x}')
-                        print('sleeping')
+                        # print(f'TIME PASSED: {x}')
+                        # print('sleeping')
                         time.sleep(int(config['frequency']))
                 else:
                     print('Please set hostname, username and password')
