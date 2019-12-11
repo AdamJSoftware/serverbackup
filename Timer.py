@@ -7,6 +7,7 @@ import shutil
 from threading import Thread
 import sys
 from dateutil import parser
+''
 
 
 def config_read():
@@ -66,9 +67,7 @@ class Main(Thread):
                                         e, exc_tb.tb_lineno))
                             time.sleep(int(config['frequency']))
                         else:
-                            # print(f'TIME PASSED: {x}')
-                            # print('sleeping')
-                            time.sleep(int(config['frequency']))
+                            time.sleep(60)
                     else:
                         # print(f'TIME PASSED: {x}')
                         # print('sleeping')
